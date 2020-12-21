@@ -32,6 +32,26 @@ const specialCharactersArray = [
   "|",
   "\\",
 ];
+const drawBarChart = (wordsObject) => {
+  let dataPoints = [["data", "Analysis"]];
+  for (word in wordsObject) {
+    dataPoints = [...dataPoints, [word, wordsObject[word]]];
+  }
+  let data = google.visualization.arrayToDataTable(dataPoints);
+  let options = { title: "Word Analysis", width: 550, height: 400 };
+  let chart = new google.visualization.BarChart(
+    document.getElementById("barChart")
+  );
+  chart.draw(data, options);
+};
+const drawPieChart = (dataArray) => {
+  let data = google.visualization.arrayToDataTable(dataArray);
+  let options = { title: "Text Analysis", width: 550, height: 400 };
+  let chart = new google.visualization.PieChart(
+    document.getElementById("piechart")
+  );
+  chart.draw(data, options);
+};
 
 //RegEx
 const isNumber = /[0-9]+$/;
@@ -139,30 +159,11 @@ const startAnalysis = () => {
 
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(() => {
-    drawPieChart();
+    drawPieChart(resultArray);
   });
   google.charts.setOnLoadCallback(() => {
     drawBarChart(wordsObject);
   });
-  const drawBarChart = (wordsObject) => {
-    let dataPoints = [["data", "Analysis"]];
-    for (word in wordsObject) {
-      dataPoints = [...dataPoints, [word, wordsObject[word]]];
-    }
-    let data = google.visualization.arrayToDataTable(dataPoints);
-    let options = { title: "Word Analysis", width: 550, height: 400 };
-    let chart = new google.visualization.BarChart(
-      document.getElementById("barChart")
-    );
-    chart.draw(data, options);
-  };
-  function drawPieChart() {
-    let data = google.visualization.arrayToDataTable(resultArray);
-    let options = { title: "Text Analysis", width: 550, height: 400 };
-    let chart = new google.visualization.PieChart(
-      document.getElementById("piechart")
-    );
-    chart.draw(data, options);
-  }
+
   return result;
 };
