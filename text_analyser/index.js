@@ -143,9 +143,9 @@ const startAnalysis = () => {
       maxFrequency = wordsObject[wrd];
       wordWithHighestFrequency = wrd;
     }
-    const br = document.createElement("br");
-    const properties = wrd + " : " + wordsObject[wrd];
-    document.body.append(properties, br);
+    // const br = document.createElement("br");
+    // const properties = wrd + " : " + wordsObject[wrd];
+    // document.body.append(properties, br);
   }
   if (wordWithHighestFrequency) {
     document.body.append(
