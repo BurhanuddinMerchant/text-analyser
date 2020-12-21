@@ -46,7 +46,7 @@ const isCapitalAlphabet = /[A-Z]+$/;
 const startAnalysis = () => {
   const analyserInpput = document.getElementById("analyser-input").value;
   if (!analyserInpput) {
-    console.log("No analyserInpput");
+    document.body.append("Error :No analyser Input");
     return;
   }
   let iterator;
