@@ -1,4 +1,4 @@
-const punctuations = [
+const specialCharactersArray = [
   ";",
   ":",
   "?",
@@ -13,6 +13,10 @@ const punctuations = [
   "_",
   ")",
   "(",
+  "{",
+  "}",
+  "[",
+  "]",
   "*",
   "&",
   "^",
@@ -25,56 +29,68 @@ const punctuations = [
   "`",
   '"',
   "'",
+  "|",
+  "\\",
 ];
-const propsList = [
-  "spaces",
-  "line_break",
-  "characters",
-  "words",
-  "raw_characters",
-  "alphabets",
-  "digits",
-  "capitalAlphabets",
-  "smallAlphabets",
-  "specialCharacters",
-  "word_count",
-];
+const displayBarGraph = (dataObject) => {
+  let dataPoints = [];
+  for (data in dataObject) {
+    dataPoints = [...dataPoints, { y: dataObject[data], label: data }];
+  }
+  console.log(dataObject);
+  var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+
+    title: {
+      text: "Word Distribution",
+    },
+    axisX: {
+      interval: 1,
+    },
+    axisY2: {
+      interlacedColor: "rgba(1,77,101,0.2)",
+      gridColor: "rgba(1,77,101,0.1)",
+      title: "Frequencies of words",
+    },
+    data: [
+      {
+        type: "bar",
+        name: "words",
+        axisYType: "secondary",
+        color: "#014D65",
+        dataPoints,
+      },
+    ],
+  });
+  chart.render();
+};
 //RegEx
 const isNumber = /[0-9]+$/;
 const isSmallAlphabet = /[a-z]+$/;
 const isCapitalAlphabet = /[A-Z]+$/;
 const startAnalysis = () => {
-  const analyserInpput = document.getElementById("analyser-input").value;
-  if (!analyserInpput) {
+  const analyserInput = document.getElementById("analyser-input").value;
+  if (!analyserInput) {
     document.body.append("Error :No analyser Input");
     return;
   }
   let iterator;
-  let input_length = analyserInpput.length;
-  let spaces = 0;
-  let line_break = 0;
-  let characters = 0;
-  let word_count = 0;
-  let digits = 0;
-  let alphabets = 0;
-  let capitalAlphabets = 0;
-  let smallAlphabets = 0;
-  let specialCharacters = 0;
-  const result = {
-    spaces,
-    line_break,
-    characters,
-    words: new Object(),
-    raw_characters: input_length,
-    alphabets,
-    digits,
-    capitalAlphabets,
-    smallAlphabets,
-    specialCharacters,
-    word_count,
-  };
+  let input_length = analyserInput.length;
   let wordStart = true;
   let word;
+  const result = {
+    spaces: 0,
+    line_break: 0,
+    characters: 0,
+    words: new Object(),
+    raw_characters: input_length,
+    alphabets: 0,
+    digits: 0,
+    capitalAlphabets: 0,
+    smallAlphabets: 0,
+    specialCharacters: 0,
+    blob_count: 0,
+  };
   const countWord = (word) => {
     if (word && !word.match(isNumber)) {
       if (result.words[word]) {
@@ -85,7 +101,7 @@ const startAnalysis = () => {
     }
   };
   for (iterator = 0; iterator < input_length; iterator++) {
-    const currentCharacter = analyserInpput[iterator];
+    const currentCharacter = analyserInput[iterator];
     if (currentCharacter === " ") {
       countWord(word);
       result.spaces += 1;
@@ -96,7 +112,7 @@ const startAnalysis = () => {
       result.line_break += 1;
       word = null;
       wordStart = true;
-    } else if (punctuations.includes(currentCharacter)) {
+    } else if (specialCharactersArray.includes(currentCharacter)) {
       countWord(word);
       word = null;
       result.specialCharacters += 1;
@@ -112,7 +128,7 @@ const startAnalysis = () => {
       if (wordStart) {
         word = currentCharacter;
         wordStart = false;
-        result.word_count += 1;
+        result.blob_count += 1;
       } else {
         word += currentCharacter;
       }
@@ -121,40 +137,44 @@ const startAnalysis = () => {
   countWord(word);
   result.alphabets = result.capitalAlphabets + result.smallAlphabets;
   let wordWithHighestFrequency = null;
-  let maxLength = -1;
+  let maxFrequency = -1;
   console.log(result);
   let resultArray = [["text", "analyser"]];
-  propsList.map((prop) => {
-    if (prop !== "words") {
-      resultArray = [...resultArray, [prop, result[prop]]];
+  for (let key in result) {
+    if (key !== "words") {
+      resultArray = [...resultArray, [key, result[key]]];
     }
     const br = document.createElement("br");
-    // const header = document.createElement("h1");
-    const properties = prop + " : " + result[prop];
+    const properties = key + " : " + result[key];
     document.body.append(properties, br);
-  });
-  console.log(wordWithHighestFrequency);
+  }
+  const wordsObject = result.words;
+  for (let wrd in wordsObject) {
+    if (wordsObject[wrd] > maxFrequency) {
+      maxFrequency = wordsObject[wrd];
+      wordWithHighestFrequency = wrd;
+    }
+    const br = document.createElement("br");
+    const properties = wrd + " : " + wordsObject[wrd];
+    document.body.append(properties, br);
+  }
   if (wordWithHighestFrequency) {
     document.body.append(
-      "Word With highest frequency is ",
+      "Word With highest frequency is '",
       wordWithHighestFrequency,
-      " With frequency : ",
-      result[wordWithHighestFrequency]
+      "' with frequency : ",
+      result.words[wordWithHighestFrequency]
     );
   }
+  //code for bargraph
+  displayBarGraph(wordsObject);
   //code for piechart
 
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(drawChart);
-
-  // Draw the chart and set the chart values
   function drawChart() {
     let data = google.visualization.arrayToDataTable(resultArray);
-
-    // Optional; add a title and set the width and height of the chart
     let options = { title: "Text Analysis", width: 550, height: 400 };
-
-    // Display the chart inside the <div> element with id="piechart"
     let chart = new google.visualization.PieChart(
       document.getElementById("piechart")
     );
