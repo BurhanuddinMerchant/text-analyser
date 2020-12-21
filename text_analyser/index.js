@@ -166,7 +166,6 @@ const startAnalysis = () => {
       result.words[wordWithHighestFrequency]
     );
   }
-  //code for bargraph
   displayBarGraph(wordsObject);
   //code for piechart
 
