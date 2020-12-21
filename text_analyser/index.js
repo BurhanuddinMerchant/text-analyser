@@ -32,38 +32,7 @@ const specialCharactersArray = [
   "|",
   "\\",
 ];
-const displayBarGraph = (dataObject) => {
-  let dataPoints = [];
-  for (data in dataObject) {
-    dataPoints = [...dataPoints, { y: dataObject[data], label: data }];
-  }
-  console.log(dataObject);
-  var chart = new CanvasJS.Chart("chartContainer", {
-    animationEnabled: true,
 
-    title: {
-      text: "Word Distribution",
-    },
-    axisX: {
-      interval: 1,
-    },
-    axisY2: {
-      interlacedColor: "rgba(1,77,101,0.2)",
-      gridColor: "rgba(1,77,101,0.1)",
-      title: "Frequencies of words",
-    },
-    data: [
-      {
-        type: "bar",
-        name: "words",
-        axisYType: "secondary",
-        color: "#014D65",
-        dataPoints,
-      },
-    ],
-  });
-  chart.render();
-};
 //RegEx
 const isNumber = /[0-9]+$/;
 const isSmallAlphabet = /[a-z]+$/;
@@ -166,12 +135,28 @@ const startAnalysis = () => {
       result.words[wordWithHighestFrequency]
     );
   }
-  displayBarGraph(wordsObject);
-  //code for piechart
+  //code for google charts
 
   google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
+  google.charts.setOnLoadCallback(() => {
+    drawPieChart();
+  });
+  google.charts.setOnLoadCallback(() => {
+    drawBarChart(wordsObject);
+  });
+  const drawBarChart = (wordsObject) => {
+    let dataPoints = [["data", "Analysis"]];
+    for (word in wordsObject) {
+      dataPoints = [...dataPoints, [word, wordsObject[word]]];
+    }
+    let data = google.visualization.arrayToDataTable(dataPoints);
+    let options = { title: "Word Analysis", width: 550, height: 400 };
+    let chart = new google.visualization.BarChart(
+      document.getElementById("barChart")
+    );
+    chart.draw(data, options);
+  };
+  function drawPieChart() {
     let data = google.visualization.arrayToDataTable(resultArray);
     let options = { title: "Text Analysis", width: 550, height: 400 };
     let chart = new google.visualization.PieChart(
