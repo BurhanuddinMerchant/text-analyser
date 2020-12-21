@@ -120,6 +120,8 @@ const startAnalysis = () => {
   }
   countWord(word);
   result.alphabets = result.capitalAlphabets + result.smallAlphabets;
+  let wordWithHighestFrequency = null;
+  let maxLength = -1;
   console.log(result);
   let resultArray = [["text", "analyser"]];
   propsList.map((prop) => {
@@ -131,7 +133,15 @@ const startAnalysis = () => {
     const properties = prop + " : " + result[prop];
     document.body.append(properties, br);
   });
-
+  console.log(wordWithHighestFrequency);
+  if (wordWithHighestFrequency) {
+    document.body.append(
+      "Word With highest frequency is ",
+      wordWithHighestFrequency,
+      " With frequency : ",
+      result[wordWithHighestFrequency]
+    );
+  }
   //code for piechart
 
   google.charts.load("current", { packages: ["corechart"] });
