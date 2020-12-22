@@ -19,10 +19,12 @@
       <button onclick="speak()">Speak</button>
       <button onclick="reset()">Reset</button>
     </div>
-    <div class="wrapper">
-      <button onclick="showAnalysisText()">Analysis Text</button>
-      <button onclick="showPieChart()">Pie Chart</button>
-      <button onclick="showBarGraph()">Bar Grapht</button>
+    <div class="wrapper" id="view-buttons">
+      <button id="analyse-text-view" onclick="showAnalysisText()">
+        Analysis Text
+      </button>
+      <button id="pie-chart-view" onclick="showPieChart()">Pie Chart</button>
+      <button id="bar-graph-view" onclick="showBarGraph()">Bar Grapht</button>
     </div>
     <div class="graph-section">
       <div id="piechart"></div>

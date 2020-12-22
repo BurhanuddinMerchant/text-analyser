@@ -32,6 +32,20 @@ const specialCharactersArray = [
   "|",
   "\\",
 ];
+//buttons for switching outputs
+const analyseTextView = document.getElementById("analyse-text-view");
+const pieChartView = document.getElementById("pie-chart-view");
+const barGraphView = document.getElementById("bar-graph-view");
+const viewButtons = document.getElementById("view-buttons");
+//utility function to change color of view buttons
+const activateViewButton = (activeButton, inactiveButton1, inactiveButton2) => {
+  activeButton.style.background = "#21209c";
+  activeButton.style.color = "#fdb827";
+  inactiveButton1.style.background = "#fdb827";
+  inactiveButton1.style.color = "#21209c";
+  inactiveButton2.style.background = "#fdb827";
+  inactiveButton2.style.color = "#21209c";
+};
 //utility function to draw barchart
 const drawBarChart = (wordsObject) => {
   let dataPoints = [["data", "Analysis"]];
@@ -80,7 +94,9 @@ const startAnalysis = () => {
 
   const analyserInput = document.getElementById("analyser-input").value;
   if (!analyserInput) {
+    viewButtons.style.display = "none";
     resultArea.append("Error :No analyser Input");
+    resultArea.style.display = "block";
     return;
   }
   let iterator;
@@ -176,8 +192,11 @@ const startAnalysis = () => {
   google.charts.setOnLoadCallback(() => {
     drawBarChart(wordsObject);
   });
+  viewButtons.style.display = "block";
   piechart.style.display = "none";
   bargraph.style.display = "none";
+  activateViewButton(analyseTextView, pieChartView, barGraphView);
+  resultArea.style.display = "block";
   return result;
 };
 
@@ -200,16 +219,19 @@ const reset = () => {
   location.reload();
 };
 const showAnalysisText = () => {
+  activateViewButton(analyseTextView, pieChartView, barGraphView);
   piechart.style.display = "none";
   bargraph.style.display = "none";
   resulttext.style.display = "block";
 };
 const showPieChart = () => {
+  activateViewButton(pieChartView, barGraphView, analyseTextView);
   piechart.style.display = "block";
   bargraph.style.display = "none";
   resulttext.style.display = "none";
 };
 const showBarGraph = () => {
+  activateViewButton(barGraphView, analyseTextView, pieChartView);
   piechart.style.display = "none";
   bargraph.style.display = "block";
   resulttext.style.display = "none";

@@ -78,3 +78,9 @@ textarea::-webkit-scrollbar-thumb {
   border: 0;
   border-top: var(--yellow) 3px solid;
 }
+#view-buttons {
+  display: none;
+}
+#result {
+  display: none;
+}
