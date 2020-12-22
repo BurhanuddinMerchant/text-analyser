@@ -68,6 +68,6 @@ textarea::-webkit-scrollbar-track {
 
 textarea::-webkit-scrollbar-thumb {
   background-color: var(--yellow);
-  border: var(--blue) 1px solid;
+  border: var(--blue) 2px solid;
   outline: 1px solid var(--blue);
 }
