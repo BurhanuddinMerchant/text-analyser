@@ -32,6 +32,7 @@ const specialCharactersArray = [
   "|",
   "\\",
 ];
+//utility function to draw barchart
 const drawBarChart = (wordsObject) => {
   let dataPoints = [["data", "Analysis"]];
   for (word in wordsObject) {
@@ -44,6 +45,7 @@ const drawBarChart = (wordsObject) => {
   );
   chart.draw(data, options);
 };
+//utility function to draw piechart
 const drawPieChart = (dataArray) => {
   let data = google.visualization.arrayToDataTable(dataArray);
   let options = { title: "Text Analysis", width: 550, height: 400 };
@@ -52,13 +54,25 @@ const drawPieChart = (dataArray) => {
   );
   chart.draw(data, options);
 };
-
+//utility function to count words
+const countWord = (word, wordsObject) => {
+  if (word && !word.match(isNumber)) {
+    if (wordsObject[word]) {
+      wordsObject[word] += 1;
+    } else {
+      wordsObject[word] = 1;
+    }
+  }
+};
 //RegEx
 const isNumber = /[0-9]+$/;
 const isSmallAlphabet = /[a-z]+$/;
 const isCapitalAlphabet = /[A-Z]+$/;
+
+//function to handle the Analyze button
 const startAnalysis = () => {
   const resultArea = document.getElementById("result");
+
   const analyserInput = document.getElementById("analyser-input").value;
   if (!analyserInput) {
     resultArea.append("Error :No analyser Input");
@@ -81,29 +95,20 @@ const startAnalysis = () => {
     specialCharacters: 0,
     blob_count: 0,
   };
-  const countWord = (word) => {
-    if (word && !word.match(isNumber)) {
-      if (result.words[word]) {
-        result.words[word] += 1;
-      } else {
-        result.words[word] = 1;
-      }
-    }
-  };
   for (iterator = 0; iterator < input_length; iterator++) {
     const currentCharacter = analyserInput[iterator];
     if (currentCharacter === " ") {
-      countWord(word);
+      countWord(word, result.words);
       result.spaces += 1;
       word = null;
       wordStart = true;
     } else if (currentCharacter === "\n") {
-      countWord(word);
+      countWord(word, result.words);
       result.line_break += 1;
       word = null;
       wordStart = true;
     } else if (specialCharactersArray.includes(currentCharacter)) {
-      countWord(word);
+      countWord(word, result.words);
       word = null;
       result.specialCharacters += 1;
     } else {
@@ -124,20 +129,23 @@ const startAnalysis = () => {
       }
     }
   }
-  countWord(word);
+  countWord(word, result.words);
   result.alphabets = result.capitalAlphabets + result.smallAlphabets;
   let wordWithHighestFrequency = null;
   let maxFrequency = -1;
   console.log(result);
   let resultArray = [["text", "analyser"]];
-
+  const resultHeader = document.createElement("h2");
+  resultHeader.textContent = "Analysis";
+  resultArea.appendChild(resultHeader);
+  resultArea.appendChild(document.createElement("hr"));
   for (let key in result) {
     if (key !== "words") {
       resultArray = [...resultArray, [key, result[key]]];
+      const br = document.createElement("br");
+      const properties = key + " : " + result[key];
+      resultArea.append(properties, br);
     }
-    const br = document.createElement("br");
-    const properties = key + " : " + result[key];
-    resultArea.append(properties, br);
   }
   const wordsObject = result.words;
   for (let wrd in wordsObject) {
@@ -145,9 +153,6 @@ const startAnalysis = () => {
       maxFrequency = wordsObject[wrd];
       wordWithHighestFrequency = wrd;
     }
-    // const br = document.createElement("br");
-    // const properties = wrd + " : " + wordsObject[wrd];
-    // document.body.append(properties, br);
   }
   if (wordWithHighestFrequency) {
     resultArea.append(
@@ -169,13 +174,8 @@ const startAnalysis = () => {
 
   return result;
 };
-const voiceFemale = {
-  voiceURI: "Microsoft Zira Desktop - English (United States)",
-  name: "Microsoft Zira Desktop - English (United States)",
-  lang: "en-US",
-  localService: true,
-  default: false,
-};
+
+//function to handle the speak functionality
 const speak = () => {
   let synth = window.speechSynthesis;
   const voices = synth.getVoices();
