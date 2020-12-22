@@ -190,3 +190,6 @@ const speak = () => {
   }
   window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
 };
+const reset = () => {
+  location.reload();
+};
