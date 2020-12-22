@@ -167,3 +167,6 @@ const startAnalysis = () => {
 
   return result;
 };
+const speak = () => {
+  window.speechSynthesis.speak(new SpeechSynthesisUtterance("Hello World"));
+};
