@@ -154,7 +154,7 @@ const startAnalysis = () => {
   result.alphabets = result.capitalAlphabets + result.smallAlphabets;
   let wordWithHighestFrequency = null;
   let maxFrequency = -1;
-  console.log(result);
+  // console.log(result);
   let resultArray = [["text", "analyser"]];
   const resultHeader = document.createElement("h2");
   resultHeader.textContent = "Analysis";
@@ -202,13 +202,6 @@ const startAnalysis = () => {
 
 //function to handle the speak functionality
 const speak = () => {
-  let synth = window.speechSynthesis;
-  const voices = synth.getVoices();
-  let i = 0;
-  for (voice in voices) {
-    console.log(voices[i]);
-    i++;
-  }
   let analyserInput = document.getElementById("analyser-input").value;
   if (!analyserInput) {
     analyserInput = "No analyser Input";
