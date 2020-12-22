@@ -8,7 +8,7 @@ body {
   font-size: 16px;
   margin: 0;
   padding: 0;
-  text-align: center;
+  /* text-align: center; */
 }
 .Header {
   margin: 0;
@@ -28,6 +28,22 @@ body {
   background-color: var(--blue);
   color: var(--yellow);
   font-size: 1em;
+}
+.wrapper {
+  text-align: center;
+}
+#result {
+  background-color: var(--blue);
+  color: var(--yellow);
+  font-size: 1.125em;
+  width: fit-content;
+  padding: 1em;
+  margin: 2em auto;
+}
+.graph-section {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 button {
   padding: 0.5em;

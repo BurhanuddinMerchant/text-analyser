@@ -58,9 +58,10 @@ const isNumber = /[0-9]+$/;
 const isSmallAlphabet = /[a-z]+$/;
 const isCapitalAlphabet = /[A-Z]+$/;
 const startAnalysis = () => {
+  const resultArea = document.getElementById("result");
   const analyserInput = document.getElementById("analyser-input").value;
   if (!analyserInput) {
-    document.body.append("Error :No analyser Input");
+    resultArea.append("Error :No analyser Input");
     return;
   }
   let iterator;
@@ -129,13 +130,14 @@ const startAnalysis = () => {
   let maxFrequency = -1;
   console.log(result);
   let resultArray = [["text", "analyser"]];
+
   for (let key in result) {
     if (key !== "words") {
       resultArray = [...resultArray, [key, result[key]]];
     }
     const br = document.createElement("br");
     const properties = key + " : " + result[key];
-    document.body.append(properties, br);
+    resultArea.append(properties, br);
   }
   const wordsObject = result.words;
   for (let wrd in wordsObject) {
@@ -148,7 +150,7 @@ const startAnalysis = () => {
     // document.body.append(properties, br);
   }
   if (wordWithHighestFrequency) {
-    document.body.append(
+    resultArea.append(
       "Word With highest frequency is '",
       wordWithHighestFrequency,
       "' with frequency : ",
