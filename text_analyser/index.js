@@ -168,5 +168,9 @@ const startAnalysis = () => {
   return result;
 };
 const speak = () => {
-  window.speechSynthesis.speak(new SpeechSynthesisUtterance("Hello World"));
+  let analyserInput = document.getElementById("analyser-input").value;
+  if (!analyserInput) {
+    analyserInput = "No analyser Input";
+  }
+  window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
 };
