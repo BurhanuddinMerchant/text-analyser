@@ -167,10 +167,37 @@ const startAnalysis = () => {
 
   return result;
 };
+const voiceFemale = {
+  voiceURI: "Microsoft Zira Desktop - English (United States)",
+  name: "Microsoft Zira Desktop - English (United States)",
+  lang: "en-US",
+  localService: true,
+  default: false,
+};
 const speak = () => {
+  // var msg = new SpeechSynthesisUtterance();
+  // var voices2 = window.speechSynthesis.getVoices();
+  // msg.voice = voices2[3];
+  // msg.text = "Hello World";
+  // speechSynthesis.speak(msg);
+  //here
+  let synth = window.speechSynthesis;
+  const voices = synth.getVoices();
+  let i = 0;
+  for (voice in voices) {
+    console.log(voices[i]);
+    i++;
+  }
   let analyserInput = document.getElementById("analyser-input").value;
   if (!analyserInput) {
     analyserInput = "No analyser Input";
   }
-  window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
+  let utter = new SpeechSynthesisUtterance();
+  utter.voiceURI = "Google français";
+  utter.lang = "en-US";
+  utter.name = "Microsoft Zira Desktop - English (United States)";
+  utter.text = analyserInput;
+  utter.volume = 1;
+  window.speechSynthesis.speak(utter);
+  // window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
 };
