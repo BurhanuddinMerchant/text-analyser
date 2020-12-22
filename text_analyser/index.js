@@ -69,6 +69,11 @@ const isNumber = /[0-9]+$/;
 const isSmallAlphabet = /[a-z]+$/;
 const isCapitalAlphabet = /[A-Z]+$/;
 
+//handle swithching in different output formats
+
+const piechart = document.getElementById("piechart");
+const bargraph = document.getElementById("barChart");
+const resulttext = document.getElementById("result");
 //function to handle the Analyze button
 const startAnalysis = () => {
   const resultArea = document.getElementById("result");
@@ -171,7 +176,8 @@ const startAnalysis = () => {
   google.charts.setOnLoadCallback(() => {
     drawBarChart(wordsObject);
   });
-
+  piechart.style.display = "none";
+  bargraph.style.display = "none";
   return result;
 };
 
@@ -192,4 +198,19 @@ const speak = () => {
 };
 const reset = () => {
   location.reload();
+};
+const showAnalysisText = () => {
+  piechart.style.display = "none";
+  bargraph.style.display = "none";
+  resulttext.style.display = "block";
+};
+const showPieChart = () => {
+  piechart.style.display = "block";
+  bargraph.style.display = "none";
+  resulttext.style.display = "none";
+};
+const showBarGraph = () => {
+  piechart.style.display = "none";
+  bargraph.style.display = "block";
+  resulttext.style.display = "none";
 };
