@@ -18,8 +18,10 @@ body {
   padding-left: 1em;
 }
 .prompt {
+  color: var(--blue);
   padding: 0;
-  margin: 2em 0;
+  margin: 1em 0;
+  font-size: 1.5em;
 }
 #analyser-input {
   width: 75%;
