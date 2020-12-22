@@ -175,12 +175,6 @@ const voiceFemale = {
   default: false,
 };
 const speak = () => {
-  // var msg = new SpeechSynthesisUtterance();
-  // var voices2 = window.speechSynthesis.getVoices();
-  // msg.voice = voices2[3];
-  // msg.text = "Hello World";
-  // speechSynthesis.speak(msg);
-  //here
   let synth = window.speechSynthesis;
   const voices = synth.getVoices();
   let i = 0;
@@ -192,12 +186,5 @@ const speak = () => {
   if (!analyserInput) {
     analyserInput = "No analyser Input";
   }
-  let utter = new SpeechSynthesisUtterance();
-  utter.voiceURI = "Google français";
-  utter.lang = "en-US";
-  utter.name = "Microsoft Zira Desktop - English (United States)";
-  utter.text = analyserInput;
-  utter.volume = 1;
-  window.speechSynthesis.speak(utter);
-  // window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
+  window.speechSynthesis.speak(new SpeechSynthesisUtterance(analyserInput));
 };
